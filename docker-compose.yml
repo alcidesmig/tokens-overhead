@@ -19,8 +19,6 @@ services:
       API_HOST: 0.0.0.0
       API_PORT: 80
       MODE: api
-    ports:
-      - 80:80
   requester:
     build: .
     environment:
@@ -32,6 +30,14 @@ services:
       REQUEST_TIMES: 1
     depends_on:
       - db
+  nginx:
+    image: nginx:1.20.2-alpine
+    restart: unless-stopped
+    volumes:
+      - ./_infra/nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+
 volumes:
   postgresql-data:
     driver: local
