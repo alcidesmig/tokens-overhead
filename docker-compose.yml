@@ -30,7 +30,7 @@ services:
       TARGET_ADDRESS: http://api:80/token
       REQUEST_TIMES: 1
     volumes:
-      - ./gcloud_roles:/tokens-overhead/gcloud_roles
+      - ./roles:/tokens-overhead/roles
     depends_on:
       - db
   nginx:
