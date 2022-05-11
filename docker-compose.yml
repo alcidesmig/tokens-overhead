@@ -29,6 +29,8 @@ services:
       POSTGRES_URI: "user=postgres dbname=postgres host=db port=5432 sslmode=disable password=admin"
       TARGET_ADDRESS: http://api:80/token
       REQUEST_TIMES: 1
+    volumes:
+      - ./gcloud_roles:/tokens-overhead/gcloud_roles
     depends_on:
       - db
   nginx:

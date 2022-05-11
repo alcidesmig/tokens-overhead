@@ -26,7 +26,7 @@ func main() {
 		)
 		api.InitAPI(svc, os.Getenv("API_HOST"), os.Getenv("API_PORT"))
 	} else if mode == "requester" {
-		rolesRepo, err := froles.NewFileRolesImpl("10x_gcloud_roles")
+		rolesRepo, err := froles.NewFileRolesImpl("gcloud_roles")
 		if err != nil {
 			panic(err)
 		}
