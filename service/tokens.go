@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"log"
 	"time"
 	"tokens-overhead/models"
@@ -68,9 +67,9 @@ func (t *tokenServiceImpl) SleepAndValidate(token string, timeToSleepMs int) (bo
 func (t *tokenServiceImpl) Execute(numRoles int, address string) error {
 	timeStartGeneratingToken := time.Now()
 	token, err := t.GenerateJWT(numRoles)
-	fmt.Print(token)
+
 	if err != nil {
-		log.Printf("error generating token: %s", err)
+		log.Printf("error generating token with %d roles: %s", numRoles, err)
 		return err
 	}
 	timeGeneratingToken := time.Since(timeStartGeneratingToken)

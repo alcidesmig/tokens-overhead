@@ -19,6 +19,8 @@ mock:
 build:
 	@go build -o app main.go
 
+run-req-local:
+	@MODE=requester POSTGRES_URI="user=postgres dbname=postgres host=localhost port=5432 sslmode=disable password=admin" go run main.go
 
 # golang agnostic commands
 get-gcloud-roles:
