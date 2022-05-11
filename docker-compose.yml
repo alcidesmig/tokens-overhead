@@ -29,6 +29,7 @@ services:
       POSTGRES_URI: "user=postgres dbname=postgres host=db port=5432 sslmode=disable password=admin"
       TARGET_ADDRESS: http://api:80/token
       REQUEST_TIMES: 1
+      mem_limit: 1000m
     volumes:
       - ./roles:/tokens-overhead/roles
     depends_on:

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -52,8 +51,6 @@ func main() {
 		for routine := 0; routine < routinesNumber; routine++ {
 			wg.Add(1)
 			go func(routineNumber int, svc service.TokenService, reqTimes int, wg *sync.WaitGroup) {
-				fmt.Printf("%v\n", routineNumber)
-
 				defer wg.Done()
 				for i := 0; i < 1000/routinesNumber; i++ {
 					numRoles := routinesNumber*routineNumber + i
