@@ -15,3 +15,5 @@ ssh $VM_USER@$VM_IP -- sudo groupadd docker
 ssh $VM_USER@$VM_IP -- sudo usermod -aG docker $USER
 
 ssh $VM_USER@$VM_IP -- git clone https://github.com/alcidesmig/tokens-overhead
+
+ssh $VM_USER@$VM_IP -- "cd tokens-overhead && docker-compose up --build -d requester db"
