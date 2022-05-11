@@ -1,11 +1,12 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
 	"sync"
+	"time"
 	"tokens-overhead/api"
 	"tokens-overhead/repository/froles"
 	"tokens-overhead/repository/gorm"
@@ -46,15 +47,21 @@ func main() {
 		)
 		targetAddress := os.Getenv("TARGET_ADDRESS")
 		reqTimes, _ := strconv.Atoi(os.Getenv("REQUEST_TIMES"))
+		routinesNumber := 10
 		var wg sync.WaitGroup
-		for routine := 0; routine < 50; routine++ {
+		for routine := 0; routine < routinesNumber; routine++ {
 			wg.Add(1)
 			go func(routineNumber int, svc service.TokenService, reqTimes int, wg *sync.WaitGroup) {
+				fmt.Printf("%v\n", routineNumber)
+
 				defer wg.Done()
-				for i := 0; i < 1000/50; i++ {
-					numRoles := 50*routineNumber + i
+				for i := 0; i < 1000/routinesNumber; i++ {
+					numRoles := routinesNumber*routineNumber + i
 					for requestTimes := 0; requestTimes < reqTimes; requestTimes++ {
-						for err = errors.New("start"); err != nil; err = svc.Execute(numRoles, targetAddress) {
+						err = svc.Execute(numRoles, targetAddress)
+						for err != nil {
+							time.Sleep(2 * time.Second)
+							err = svc.Execute(numRoles, targetAddress)
 						}
 					}
 				}

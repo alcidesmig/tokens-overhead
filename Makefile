@@ -22,6 +22,9 @@ build:
 run-req-local:
 	@MODE=requester POSTGRES_URI="user=postgres dbname=postgres host=localhost port=5432 sslmode=disable password=admin" go run main.go
 
+check-results:
+	@psql -h localhost -Upostgres --password < results.sql
+
 # golang agnostic commands
 get-gcloud-roles:
 	@gcloud iam roles list --format="value(name.basename())" > gcloud_roles
