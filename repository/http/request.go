@@ -22,11 +22,14 @@ func (h *httpRequestImpl) Request(token, address string) error {
 		return err
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("%s", token))
+	// dump, err := httputil.DumpRequestOut(req, true)
 
 	resp, err := h.Client.Do(req)
 	if err != nil {
 		return err
-	} else if resp.StatusCode != 200 {
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
 		return fmt.Errorf("wrong status code: %d", resp.StatusCode)
 	}
 	return nil

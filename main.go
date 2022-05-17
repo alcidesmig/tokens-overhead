@@ -52,7 +52,7 @@ func main() {
 			wg.Add(1)
 			go func(routineNumber int, svc service.TokenService, reqTimes int, wg *sync.WaitGroup) {
 				defer wg.Done()
-				for i := 0; i < 1000/routinesNumber; i++ {
+				for i := 0; i < reqTimes/routinesNumber; i++ {
 					numRoles := routinesNumber*routineNumber + i
 					for requestTimes := 0; requestTimes < reqTimes; requestTimes++ {
 						err = svc.Execute(numRoles, targetAddress)
