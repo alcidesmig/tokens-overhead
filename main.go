@@ -46,14 +46,16 @@ func main() {
 		)
 		targetAddress := os.Getenv("TARGET_ADDRESS")
 		reqTimes, _ := strconv.Atoi(os.Getenv("REQUEST_TIMES"))
-		routinesNumber := 10
+		routinesNumber := 50
+		numRoles := 2500
+		numRolesPerRoutine := numRoles / routinesNumber
 		var wg sync.WaitGroup
 		for routine := 0; routine < routinesNumber; routine++ {
 			wg.Add(1)
 			go func(routineNumber int, svc service.TokenService, reqTimes int, wg *sync.WaitGroup) {
 				defer wg.Done()
-				for i := 0; i < reqTimes/routinesNumber; i++ {
-					numRoles := routinesNumber*routineNumber + i
+				for i := 0; i < numRolesPerRoutine; i++ {
+					numRoles := routineNumber*numRolesPerRoutine + i
 					for requestTimes := 0; requestTimes < reqTimes; requestTimes++ {
 						err = svc.Execute(numRoles, targetAddress)
 						for err != nil {
