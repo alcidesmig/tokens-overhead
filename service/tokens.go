@@ -81,7 +81,10 @@ func (t *tokenServiceImpl) Execute(numRoles int, address string) error {
 		return err
 	}
 	timeRequesting := time.Since(timeStartRequest)
-
+	if t.db == nil {
+		log.Printf("Request was done in %dus with tokensize=%d", timeRequesting.Microseconds(), len(*token))
+		return nil
+	}
 	return t.db.Save(
 		models.NewRequest(
 			timeRequesting.Microseconds(),

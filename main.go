@@ -68,5 +68,30 @@ func main() {
 		}
 		wg.Wait()
 		log.Print("end")
+	} else if mode == "unique" {
+		rolesRepo, err := froles.NewFileRolesImpl("roles/10x_gcloud_roles")
+		if err != nil {
+			panic(err)
+		}
+		jwtTokenRepo, err := jwt.NewJWTTokenImpl("keys/rsa.pub", "keys/rsa")
+		if err != nil {
+			panic(err)
+		}
+		requestRepo := http.NewHTTPRequester()
+
+		svc := service.NewTokenService(
+			rolesRepo, jwtTokenRepo, requestRepo, nil, os.Getenv("MACHINE_NAME"), os.Getenv("CRYPT_METHOD"),
+		)
+		targetAddress := os.Getenv("TARGET_ADDRESS")
+		reqTimes, _ := strconv.Atoi(os.Getenv("REQUEST_TIMES"))
+		numRoles, _ := strconv.Atoi(os.Getenv("NUM_ROLES"))
+
+		for requestTimes := 0; requestTimes < reqTimes; requestTimes++ {
+			err = svc.Execute(numRoles, targetAddress)
+			for err != nil {
+				err = svc.Execute(numRoles, targetAddress)
+			}
+		}
+		log.Print("end")
 	}
 }

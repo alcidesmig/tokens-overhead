@@ -32,8 +32,18 @@ services:
       mem_limit: 1000m
     volumes:
       - ./roles:/tokens-overhead/roles
-    depends_on:
-      - db
+  once-requester:
+    build: .
+    environment:
+      MACHINE_NAME: requester
+      CRYPT_METHOD: rsa1024
+      MODE: unique
+      TARGET_ADDRESS: http://34.125.39.144:80/token
+      REQUEST_TIMES: 1
+      NUM_ROLES: 370
+      mem_limit: 1000m
+    volumes:
+      - ./roles:/tokens-overhead/roles
   nginx:
     image: nginx:1.20.2-alpine
     restart: unless-stopped
