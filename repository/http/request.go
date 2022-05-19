@@ -2,7 +2,10 @@ package http
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"net/http/httputil"
+	"os"
 	"tokens-overhead/repository"
 )
 
@@ -16,13 +19,20 @@ func NewHTTPRequester() repository.RequestInterface {
 	}
 }
 
+var mode = os.Getenv("MODE")
+
 func (h *httpRequestImpl) Request(token, address string) error {
 	req, err := http.NewRequest(http.MethodGet, address, nil)
 	if err != nil {
 		return err
 	}
 	req.Header.Add("Authorization", fmt.Sprintf("%s", token))
-	// dump, err := httputil.DumpRequestOut(req, true)
+	dump, err := httputil.DumpRequestOut(req, true)
+	if err == nil {
+		if mode == "unique" {
+			log.Printf("HTTP request size: %dbytes\n", len(dump))
+		}
+	}
 
 	resp, err := h.Client.Do(req)
 	if err != nil {
